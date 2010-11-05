@@ -6,7 +6,11 @@ def _build_flag_url():
         url = settings.COUNTRIES_FLAG_URL
     else:
         url = 'flags/%(code)s.gif'
-    prefix = getattr(settings, 'STATIC_URL', '') or settings.MEDIA_URL
+
+    prefix = getattr(settings, 'STATIC_URL', '') or \
+        getattr(settings, 'STATICFILES_URL', '') or \
+        settings.MEDIA_URL
+
     if not prefix.endswith('/'):
         prefix = '%s/' % prefix
     return '%s%s' % (prefix, url)
