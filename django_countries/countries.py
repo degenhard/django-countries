@@ -1,5 +1,48 @@
 from django.utils.translation import ugettext_lazy as _
 
+
+
+""" example usage for choicefilter
+    
+    - whitelist
+    
+        from django_countries.countries import COUNTRIES_FILTER
+        country = forms.ChoiceField(
+            choices=COUNTRIES_FILTER(0,('DE','ES','GB')),
+        )
+
+    - blacklist
+        
+        from django_countries.countries import COUNTRIES_FILTER
+        country = forms.ChoiceField(
+            choices=COUNTRIES_FILTER(1,('DE','ES','GB')),
+        )
+""" 
+
+
+def choicefilter(mode,choices,vlist):
+    if mode == 0:
+        whitelisted = lambda choices, w: tuple((k) \
+                    for k in iter(choices) if k[0] in w)
+
+        return whitelisted(choices, vlist)
+
+    elif mode == 1:
+        blacklisted = lambda choices, w: tuple((k) \
+                    for k in iter(choices) if k[0] not in w)
+        return blacklistet(choices, vlist)
+
+    else:
+        return choices
+
+
+def COUNTRIES_FILTER(mode, vlist):
+    return choicefilter(mode, COUNTRIES, vlist)
+
+def COUNTRIES_PLUS_FILTER(mode, vlist):
+    return choicefilter(mode, COUNTRIES_PLUS, vlist)
+
+
 # Nicely titled (and translatable) country names.
 COUNTRIES = (
     ('AF', _(u'Afghanistan')),
