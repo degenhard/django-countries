@@ -30,7 +30,7 @@ def choicefilter(mode,choices,vlist):
     elif mode == 1:
         blacklisted = lambda choices, w: tuple((k) \
                     for k in iter(choices) if k[0] not in w)
-        return blacklistet(choices, vlist)
+        return blacklisted(choices, vlist)
 
     else:
         return choices
