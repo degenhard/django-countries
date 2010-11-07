@@ -4,9 +4,10 @@ from django_countries import settings
 
 
 class Country(StrAndUnicode):
+
     def __init__(self, code):
         self.code = code
-    
+
     def __unicode__(self):
         return force_unicode(self.code or u'')
 
@@ -30,16 +31,16 @@ class Country(StrAndUnicode):
 
     def __len__(self):
         return len(unicode(self))
-    
+
     @property
     def name(self):
-        # Local import so the countries aren't loaded unless they are needed. 
+        # Local import so the countries aren't loaded unless they are needed.
         from django_countries.countries import COUNTRIES
         for code, name in COUNTRIES:
             if self.code == code:
                 return name
         return ''
-    
+
     @property
     def flag(self):
         if not self.code:
@@ -55,10 +56,11 @@ class CountryDescriptor(object):
 
         >>> instance.country.name
         u'New Zealand'
-        
+
         >>> instance.country.flag
         '/static/flags/nz.gif'
     """
+
     def __init__(self, field):
         self.field = field
 
@@ -79,20 +81,20 @@ class CountryField(CharField):
     """
     A country field for Django models that provides all ISO 3166-1 countries as
     choices.
-    
+
     """
     descriptor_class = CountryDescriptor
- 
+
     def __init__(self, *args, **kwargs):
-        # Local import so the countries aren't loaded unless they are needed. 
-        from django_countries.countries import COUNTRIES 
+        # Local import so the countries aren't loaded unless they are needed.
+        from django_countries.countries import COUNTRIES
 
-        kwargs.setdefault('max_length', 2) 
-        kwargs.setdefault('choices', COUNTRIES) 
+        kwargs.setdefault('max_length', 2)
+        kwargs.setdefault('choices', COUNTRIES)
 
-        super(CharField, self).__init__(*args, **kwargs) 
+        super(CharField, self).__init__(*args, **kwargs)
 
-    def get_internal_type(self): 
+    def get_internal_type(self):
         return "CharField"
 
     def contribute_to_class(self, cls, name):
